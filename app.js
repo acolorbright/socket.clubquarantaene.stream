@@ -28,7 +28,8 @@ setInterval(function () {
 
 // Serve the index.html
 app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname + '/index.html'));
+  // res.sendFile(path.join(__dirname + '/index.html'));
+  res.sendFile(path.join(__dirname + '/../html/index.html'));
 });
 
 setInterval(() => {
