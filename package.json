@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/img2001jpg/socket.clubquarantaene.stream#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "morgan": "^1.10.0"

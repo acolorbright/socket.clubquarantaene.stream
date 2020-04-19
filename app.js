@@ -1,63 +1,55 @@
+// eslint-disable-next-line no-unused-vars
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
-const http = require('http').Server(app);
+const generalRoutes = require('./api/routes/generalRoutes');
+const SocketRoutes = require('./api/chat');
 
-const io = require('socket.io')(http, {
-  origins: '*:*',
-  pingInterval: 10000,
-  pingTimeout: 5000,
-});
-const path = require('path');
-const port = 8080;
-const roomsAmount = 22;
-let roomsArr = [];
+// CORS //
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // to restrict it later second argument: 'https://blabla'
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 
-function createEmptyRooms(arr, amount) {
-  roomsArr = [];
-  for (let i = 0; i < amount; i++) {
-    arr.push(true);
+  if (req.method === 'OPTIONS') {
+    // the browser makes a request first to check if he can make the request
+    res.header('Access-Control-Allow-Methods', 'POST, GET');
+    return res.status(200).json({});
   }
+  next();
+});
+
+// ROUTES //
+app.use('/v1/', generalRoutes); // general routes
+app.use('/socket/', SocketRoutes); // chat
+
+// STATIC SITES //
+// app.use('/apitest', express.static(__dirname + '/testapi'));
+
+// DEV PLUGINS //
+if (process.env.NODE_ENV !== 'production') {
+  // http logging
+  const morgan = require('morgan');
+  app.use(morgan('tiny'));
 }
 
-createEmptyRooms(roomsArr, roomsAmount);
-
-setInterval(function () {
-  createEmptyRooms(roomsArr, roomsAmount);
-  io.emit('bathrooms', roomsArr);
-}, 1 * 60 * 60 * 1000);
-
-// Serve the index.html
-app.get('*', function (req, res) {
-  // res.sendFile(path.join(__dirname + '/index.html'));
-  res.sendFile(path.join(__dirname + '/../html/index.html'));
+// ROUTING FALLBACK //
+app.use((req, res, next) => {
+  // anything that gets passed the routes
+  const error = new Error('Not found');
+  error.status = 404;
+  next(error);
 });
 
-setInterval(() => {
-  io.emit('userCount', io.engine.clientsCount);
-}, 5000);
-
-// If a new user connects
-io.on('connection', (socket) => {
-  // If someone goes to the bathroom send him the current status of rooms
-  socket.on('bathroom-connect', function () {
-    io.emit('bathrooms', roomsArr);
-  });
-  // If a new user connects to a chatroom
-  socket.on('room-connect', function (room) {
-    roomsArr[room] = true;
-    io.emit('bathrooms', roomsArr);
-  });
-  // If a user connects to a chatroom
-  socket.on('room-disconnect', function (room) {
-    roomsArr[room] = false;
-    io.emit('bathrooms', roomsArr);
-  });
-  // If someone sends a message
-  socket.on('sendMessage', (msg) => {
-    socket.broadcast.emit('newMessage', msg);
+app.use((error, req, res, next) => {
+  // next needs to stay
+  // this passes if any other error happens in the application
+  res.status(error.status || 500);
+  res.json({
+    error: {
+      message: error.message,
+    },
   });
 });
 
-http.listen(port, () => {
-  console.log(`Listening on *: ${port}`);
-});
+module.exports = app;
