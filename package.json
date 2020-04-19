@@ -1,0 +1,25 @@
+{
+  "name": "socket.clubquarantaene.stream",
+  "version": "1.0.0",
+  "description": "Node Server for Club Quarantaene",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/img2001jpg/socket.clubquarantaene.stream.git"
+  },
+  "author": "Marco Land, Florian Zia, Vinzenz Aubry",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/img2001jpg/socket.clubquarantaene.stream/issues"
+  },
+  "homepage": "https://github.com/img2001jpg/socket.clubquarantaene.stream#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0"
+  }
+}
