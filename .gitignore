@@ -3,3 +3,4 @@ Makefile
 /node_modules/*
 .DS_Store
 .DS_Store
+config.codekit3
