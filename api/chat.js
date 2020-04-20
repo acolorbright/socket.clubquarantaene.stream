@@ -22,17 +22,17 @@ require('dotenv').config();
 //   // });
 // });
 
-module.exports = function (server) {
+module.exports = (server) => {
   const io = require('socket.io')(server);
 
   // If a new user connects
-  io.on('connection', function (client) {
-    client.on('join', function (data) {
+  io.on('connection', (client) => {
+    client.on('join', (data) => {
       console.log(data);
       client.emit('messages', 'Socket Connected to Server');
     });
 
-    client.on('messages', function (data) {
+    client.on('messages', (data) => {
       client.emit('broad', data);
     });
   });

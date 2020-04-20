@@ -18,24 +18,39 @@ app.use((req, res, next) => {
   next();
 });
 
-// FILE ACCESS //
-app.use('/public', express.static(__dirname + '/public'));
+// EXPRESS SETUP//
 app.set('view engine', 'ejs');
+app.use('/public', express.static(__dirname + '/public'));
+app.use(express.urlencoded({ extended: true }));
 
 // JS //
 app.use('/v1/', generalRoutes); // general routes
 // app.use('/socket/', SocketRoutes); // chat
 
 // ROUTES//
-app.get('/mainfloor', function (req, res) {
-  res.render('mainfloor', {});
+const rooms = {};
+
+// add 21 rooms
+const amountOfRooms = 21;
+for (let index = 0; index < amountOfRooms; index++) {
+  let obj = {};
+  let roomName = `room-${index}`;
+  rooms[roomName] = obj;
+}
+
+app.get('/mainfloor', (req, res) => {
+  res.render('mainfloor', { rooms: rooms });
 });
 
-app.get('/toilets', function (req, res) {
+app.get('/toilets/:room', (req, res) => {
+  res.render('toiletroom', { roomName: req.params.room });
+});
+
+app.get('/toilets', (req, res) => {
   res.render('toilets', {});
 });
 
-app.get('/lostandfound', function (req, res) {
+app.get('/lostandfound', (req, res) => {
   res.render('lostandfound', {});
 });
 
