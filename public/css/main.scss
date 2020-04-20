@@ -9,12 +9,20 @@ p {
   margin: 12px 0 12px 12px;
 }
 
-.wrapper {
-  width: 90vw;
-  margin: 0 auto;
-  margin-top: 25px;
+/* ============ General ============*/
+.linkFooter {
+  padding: 12px;
+  margin-top: 12px;
 }
 
+/* ============ Main Floor ============*/
+.chatWrapper {
+  background-color: yellow;
+  width: 100vw;
+  padding: 12px;
+}
+
+/* ============ Toilets ============*/
 .cubicleWrapper {
   width: 100vw;
   height: auto;
@@ -43,7 +51,4 @@ p {
   }
 }
 
-.linkFooter {
-  padding: 12px;
-  margin-top: 12px;
-}
+/* ============ Lost and Found ============*/
