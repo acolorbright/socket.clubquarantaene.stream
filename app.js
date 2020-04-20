@@ -4,7 +4,6 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const generalRoutes = require('./api/routes/generalRoutes');
-const SocketRoutes = require('./api/chat');
 
 // CORS //
 app.use((req, res, next) => {
@@ -25,7 +24,7 @@ app.set('view engine', 'ejs');
 
 // JS //
 app.use('/v1/', generalRoutes); // general routes
-app.use('/socket/', SocketRoutes); // chat
+// app.use('/socket/', SocketRoutes); // chat
 
 // ROUTES//
 app.get('/mainfloor', function (req, res) {
