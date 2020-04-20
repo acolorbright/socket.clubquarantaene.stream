@@ -4,14 +4,18 @@ const io = require('socket.io')(socketPort);
 
 module.exports = () => {
   // If a new user connects
-  io.on('connection', (client) => {
-    client.on('join', (data) => {
+  io.on('connection', (socket) => {
+    socket.on('join', (data) => {
       console.log(data);
-      client.emit('messages', 'Socket Connected to Server');
+      socket.emit('messages', 'Socket Connected to Server');
     });
 
-    client.on('messages', (data) => {
-      client.emit('broad', data);
+    socket.on('client-global-message', (data) => {
+      socket.broadcast.emit('server-global-message', data);
+    });
+
+    socket.on('messages', (data) => {
+      socket.emit('broad', data);
     });
   });
 
