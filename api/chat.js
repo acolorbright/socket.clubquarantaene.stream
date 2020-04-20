@@ -4,14 +4,28 @@ const io = require('socket.io')(socketPort);
 
 module.exports = () => {
   // If a new user connects
+
+  const users = {};
+
   io.on('connection', (socket) => {
     socket.on('join', (data) => {
       console.log(data);
       socket.emit('messages', 'Socket Connected to Server');
     });
 
-    socket.on('client-global-message', (data) => {
-      socket.broadcast.emit('server-global-message', data);
+    // ============ Main Floor ============ //
+    socket.on('new-user-mainfloor', (name) => {
+      users[socket.id] = name;
+      socket.broadcast.emit('user-connected-mainfloor', name);
+    });
+
+    socket.on('client-global-message', (message) => {
+      socket.broadcast.emit('server-global-message', { message: message, name: users[socket.id] });
+    });
+
+    socket.on('disconnect', () => {
+      socket.broadcast.emit('user-disconnected-mainfloor', users[socket.id]);
+      delete users[socket.id];
     });
 
     socket.on('messages', (data) => {
