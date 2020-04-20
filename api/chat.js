@@ -1,4 +1,22 @@
 require('dotenv').config();
+const socketPort = process.env.SOCKETPORT || 1338;
+const io = require('socket.io')(socketPort);
+
+module.exports = () => {
+  // If a new user connects
+  io.on('connection', (client) => {
+    client.on('join', (data) => {
+      console.log(data);
+      client.emit('messages', 'Socket Connected to Server');
+    });
+
+    client.on('messages', (data) => {
+      client.emit('broad', data);
+    });
+  });
+
+  return io;
+};
 
 // old sockets
 // io.on('connection', (socket) => {
@@ -21,21 +39,3 @@ require('dotenv').config();
 //   //   socket.broadcast.emit('newMessage', msg);
 //   // });
 // });
-
-module.exports = (server) => {
-  const io = require('socket.io')(server);
-
-  // If a new user connects
-  io.on('connection', (client) => {
-    client.on('join', (data) => {
-      console.log(data);
-      client.emit('messages', 'Socket Connected to Server');
-    });
-
-    client.on('messages', (data) => {
-      client.emit('broad', data);
-    });
-  });
-
-  return io;
-};

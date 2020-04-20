@@ -1,7 +1,7 @@
 'use strict';
 
 //connection to socket
-const socket = io.connect();
+const socket = io('http://localhost:1338');
 
 //================= SOCKET IO =================
 socket.on('connect', function (data) {

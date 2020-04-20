@@ -4,6 +4,8 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const generalRoutes = require('./api/routes/generalRoutes');
+// eslint-disable-next-line no-unused-vars
+const sockets = require('./api/chat');
 
 // CORS //
 app.use((req, res, next) => {
