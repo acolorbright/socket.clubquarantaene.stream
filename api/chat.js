@@ -9,23 +9,23 @@ const io = require('socket.io')(http, {
 });
 
 const path = require('path');
-const roomsAmount = 22;
 
-let roomsArr = [];
+// const roomsAmount = 22;
+// let roomsArr = [];
 
-function createEmptyRooms(arr, amount) {
-  roomsArr = [];
-  for (let i = 0; i < amount; i++) {
-    arr.push(true);
-  }
-}
+// function createEmptyRooms(arr, amount) {
+//   roomsArr = [];
+//   for (let i = 0; i < amount; i++) {
+//     arr.push(true);
+//   }
+// }
 
-createEmptyRooms(roomsArr, roomsAmount);
+// createEmptyRooms(roomsArr, roomsAmount);
 
-setInterval(function () {
-  createEmptyRooms(roomsArr, roomsAmount);
-  io.emit('bathrooms', roomsArr);
-}, 1 * 60 * 60 * 1000);
+// setInterval(function () {
+//   createEmptyRooms(roomsArr, roomsAmount);
+//   io.emit('bathrooms', roomsArr);
+// }, 1 * 60 * 60 * 1000);
 
 // Serve the index.html
 router.get('*', function (req, res) {

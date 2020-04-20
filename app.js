@@ -19,9 +19,26 @@ app.use((req, res, next) => {
   next();
 });
 
-// ROUTES //
+// FILE ACCESS //
+app.use('/public', express.static(__dirname + '/public'));
+app.set('view engine', 'ejs');
+
+// JS //
 app.use('/v1/', generalRoutes); // general routes
 app.use('/socket/', SocketRoutes); // chat
+
+// ROUTES//
+app.get('/mainfloor', function (req, res) {
+  res.render('mainfloor', {});
+});
+
+app.get('/toilets', function (req, res) {
+  res.render('toilets', {});
+});
+
+app.get('/lostandfound', function (req, res) {
+  res.render('lostandfound', {});
+});
 
 // STATIC SITES //
 // app.use('/apitest', express.static(__dirname + '/testapi'));
@@ -41,6 +58,7 @@ app.use((req, res, next) => {
   next(error);
 });
 
+// eslint-disable-next-line no-unused-vars
 app.use((error, req, res, next) => {
   // next needs to stay
   // this passes if any other error happens in the application
