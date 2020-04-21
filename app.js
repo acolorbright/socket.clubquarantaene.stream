@@ -5,7 +5,6 @@ const express = require('express');
 const app = express();
 const generalRoutes = require('./api/routes/generalRoutes');
 // eslint-disable-next-line no-unused-vars
-const sockets = require('./api/chat');
 const params = require('./api/params.js');
 
 // CORS //
@@ -36,27 +35,24 @@ const rooms = {};
 // add 21 rooms
 const amountOfRooms = 21;
 for (let index = 0; index < amountOfRooms; index++) {
-  let obj = {};
+  let obj = { users: {} }; // no users in the beginning
   let roomName = `room${index}`;
   rooms[roomName] = obj;
 }
 
 app.get('/mainfloor', (req, res) => {
-  res.render('mainfloor', { rooms: rooms });
+  res.render('mainfloor', {});
 });
 
 app.get('/toilets', (req, res) => {
   res.render('toilets', {});
-  console.log('4');
 });
 
 app.get('/toilets/:room', (req, res) => {
   // if room doesn't exist, go back to toilets
-  if (!(req.params.room in rooms)) {
-    res.redirect('../toilets');
-    return;
+  if (rooms[req.params.room] == null) {
+    return res.redirect('../toilets');
   }
-  console.log('still runs');
   res.render('toiletroom', { roomName: req.params.room });
 });
 
