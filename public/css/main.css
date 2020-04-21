@@ -40,5 +40,7 @@ p {
       margin: 0;
       padding: 0;
       margin-bottom: 12px; }
+    .cubicleWrapper .cubicle a {
+      color: white; }
 
 /* ============ Lost and Found ============*/

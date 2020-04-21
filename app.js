@@ -36,7 +36,7 @@ const rooms = {};
 const amountOfRooms = 21;
 for (let index = 0; index < amountOfRooms; index++) {
   let obj = {};
-  let roomName = `room-${index}`;
+  let roomName = `room${index}`;
   rooms[roomName] = obj;
 }
 
@@ -44,12 +44,19 @@ app.get('/mainfloor', (req, res) => {
   res.render('mainfloor', { rooms: rooms });
 });
 
-app.get('/toilets/:room', (req, res) => {
-  res.render('toiletroom', { roomName: req.params.room });
-});
-
 app.get('/toilets', (req, res) => {
   res.render('toilets', {});
+  console.log('4');
+});
+
+app.get('/toilets/:room', (req, res) => {
+  // if room doesn't exist, go back to toilets
+  if (!(req.params.room in rooms)) {
+    res.redirect('../toilets');
+    return;
+  }
+  console.log('still runs');
+  res.render('toiletroom', { roomName: req.params.room });
 });
 
 app.get('/lostandfound', (req, res) => {
