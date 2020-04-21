@@ -6,6 +6,7 @@ const app = express();
 const generalRoutes = require('./api/routes/generalRoutes');
 // eslint-disable-next-line no-unused-vars
 const sockets = require('./api/chat');
+const params = require('./api/params.js');
 
 // CORS //
 app.use((req, res, next) => {
