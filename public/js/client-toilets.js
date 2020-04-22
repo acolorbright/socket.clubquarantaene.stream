@@ -1,30 +1,5 @@
 'use strict';
 
-//connection to socket
-// eslint-disable-next-line no-undef
-const socket = io('http://localhost:1338');
-
-let uData = {
-  name: null,
-};
-
-// username
-if (sessionStorage.getItem('clubQName') == null) {
-  const name = prompt('what is your name?');
-  sessionStorage.setItem('clubQName', name);
-  uData.name = name;
-} else {
-  uData.name = sessionStorage.getItem('clubQName');
-}
-
-//================= SOCKET IO =================
-socket.on('connect', function () {
-  socket.emit('join', 'Server Connected to Client');
-  socket.emit('new-user', roomName, uData.name);
-});
-
-// socket.emit('new-user', roomName, uData.name);
-
 socket.emit('getCubiclesStatus');
 
 socket.on('cubicleStatus', function (cubicleDataArray) {
@@ -39,12 +14,4 @@ socket.on('cubicleStatus', function (cubicleDataArray) {
       cubicle.querySelector('.enter-cubicle-link').style.visibility = 'visible';
     }
   });
-});
-
-socket.on('messages', function (data) {
-  console.log(data);
-});
-
-socket.on('total-users', function (amount) {
-  document.getElementById('totalUsers').innerHTML = amount;
 });
