@@ -25,7 +25,7 @@ if (messageForm != null) {
     e.preventDefault();
     const message = messageInput.value;
     appendMessage(`You: ${message}`);
-    socket.emit('send-chat-message', roomName, message);
+    socket.emit('send-chat-message', message);
     messageInput.value = '';
   });
 
