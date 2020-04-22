@@ -1,11 +1,7 @@
-require('dotenv').config();
-
-module.exports = () => {
-  const params = {
-    //cubicles
-    cubiclesAmount: 20, //this is not updated dynamically on the frontend yet
-    maxUsersPerCubicle: 8,
-  };
-
-  return params;
+const params = {
+  //cubicles
+  cubiclesAmount: 21, //this is not updated dynamically on the frontend yet (X cubicles + 1 mainfloor)
+  maxUsersPerCubicle: 8,
 };
+
+module.exports = params;

@@ -1,11 +1,11 @@
-// eslint-disable-next-line no-unused-vars
-require('dotenv').config();
-
 const express = require('express');
 const app = express();
 const generalRoutes = require('./api/routes/generalRoutes');
 // eslint-disable-next-line no-unused-vars
 const params = require('./api/params.js');
+const rooms = require('./api/rooms.js');
+// eslint-disable-next-line no-unused-vars
+require('dotenv').config();
 
 // CORS //
 app.use((req, res, next) => {
@@ -30,16 +30,6 @@ app.use('/v1/', generalRoutes); // general routes
 // app.use('/socket/', SocketRoutes); // chat
 
 // ROUTES//
-const rooms = {};
-
-// add 21 rooms
-const amountOfRooms = 21;
-for (let index = 0; index < amountOfRooms; index++) {
-  let obj = { users: {} }; // no users in the beginning
-  let roomName = `room${index}`;
-  rooms[roomName] = obj;
-}
-
 app.get('/mainfloor', (req, res) => {
   res.render('mainfloor', { roomName: 'room0' });
 });

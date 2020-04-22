@@ -1,10 +1,13 @@
 require('dotenv').config();
-const socketPort = process.env.SOCKETPORT || 1338;
-const io = require('socket.io')(socketPort);
+const rooms = require('./rooms.js');
+// const socketPort = process.env.SOCKETPORT || 1338;
+// const io = require('socket.io')(socketPort);
 
-module.exports = () => {
+module.exports = (io) => {
   // If a new user connects
   const users = {};
+
+  console.log(rooms);
 
   io.on('connection', (socket) => {
     socket.on('join', (data) => {
