@@ -44,12 +44,19 @@ module.exports = (io) => {
     // all chat messages
     socket.on('send-chat-message', (room, message) => {
       console.log('recieving chat message');
-      if (!rooms[room].users[socket.id]) {
-        socket.emit('error-message', { type: 'sending-to-wrong-room' });
-        return;
-      }
 
-      // check if user in room he wants to send to
+      // check if user in correct room
+      if (params.checkOnlyIfUserInCubicle) {
+        if (room != 'mainfloor' && room != 'toilets' && !rooms[room].users[socket.id]) {
+          socket.emit('error-message', { type: 'sending-to-wrong-room' });
+          return;
+        }
+      } else {
+        if (!rooms[room].users[socket.id]) {
+          socket.emit('error-message', { type: 'sending-to-wrong-room' });
+          return;
+        }
+      }
 
       socket.to(room).broadcast.emit('chat-message', { message: message, name: rooms[room].users[socket.id] });
     });
