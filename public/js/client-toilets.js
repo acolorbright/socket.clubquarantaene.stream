@@ -44,3 +44,7 @@ socket.on('cubicleStatus', function (cubicleDataArray) {
 socket.on('messages', function (data) {
   console.log(data);
 });
+
+socket.on('total-users', function (amount) {
+  document.getElementById('totalUsers').innerHTML = amount;
+});

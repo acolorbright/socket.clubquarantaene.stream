@@ -10,7 +10,15 @@ for (let index = 1; index < params.cubiclesAmount; index++) {
   cubicleNamesOrdered.push(roomName);
 }
 
+const allChatroomNamesOrdered = Object.keys(rooms);
+
 module.exports = (io) => {
+  if (params.updateUserCount) {
+    setInterval(() => {
+      io.emit('total-users', returnTotalUserCount());
+    }, params.updateUserCountFrequency);
+  }
+
   io.on('connection', (socket) => {
     socket.on('join', (data) => {
       console.log(data);
@@ -26,7 +34,6 @@ module.exports = (io) => {
 
       // update room specs on users joining
       if (cubicleNamesOrdered.includes(room)) sendCubicleStatusToEveryoneInToilets();
-      console.log(cubicleNamesOrdered.includes(room));
 
       // print room stats
       if (params.logRoomsOnConnect) {
@@ -71,17 +78,6 @@ module.exports = (io) => {
       socket.to('toilets').broadcast.emit('cubicleStatus', returnCubicleOccupation());
     };
 
-    /** Returns an array with occupation numbers for all cubicles*/
-    const returnCubicleOccupation = () => {
-      let cubicleUsers = [];
-      cubicleNamesOrdered.forEach((roomName) => {
-        let userNumber = Object.keys(rooms[roomName].users).length;
-        let string = userNumber >= params.maxUsersPerCubicle ? 'full' : `${userNumber}/${params.maxUsersPerCubicle}`;
-        cubicleUsers.push(string);
-      });
-      return cubicleUsers;
-    };
-
     // general messaging
     socket.on('messages', (data) => {
       socket.emit('broad', data);
@@ -91,24 +87,22 @@ module.exports = (io) => {
   return io;
 };
 
-// old sockets
-// io.on('connection', (socket) => {
-//   // If someone goes to the bathroom send him the current status of rooms
-//   // socket.on('bathroom-connect', function () {
-//   //   io.emit('bathrooms', roomsArr);
-//   // });
-//   // // If a new user connects to a chatroom
-//   // socket.on('room-connect', function (room) {
-//   //   roomsArr[room] = true;
-//   //   io.emit('bathrooms', roomsArr);
-//   // });
-//   // // If a user connects to a chatroom
-//   // socket.on('room-disconnect', function (room) {
-//   //   roomsArr[room] = false;
-//   //   io.emit('bathrooms', roomsArr);
-//   // });
-//   // // If someone sends a message
-//   // socket.on('sendMessage', (msg) => {
-//   //   socket.broadcast.emit('newMessage', msg);
-//   // });
-// });
+/** Returns an array with occupation numbers for all cubicles*/
+const returnCubicleOccupation = () => {
+  let cubicleUsers = [];
+  cubicleNamesOrdered.forEach((roomName) => {
+    let userNumber = Object.keys(rooms[roomName].users).length;
+    let string = userNumber >= params.maxUsersPerCubicle ? 'full' : `${userNumber}/${params.maxUsersPerCubicle}`;
+    cubicleUsers.push(string);
+  });
+  return cubicleUsers;
+};
+
+const returnTotalUserCount = () => {
+  let users = 0;
+  allChatroomNamesOrdered.forEach((roomName) => {
+    users = users + Object.keys(rooms[roomName].users).length;
+  });
+
+  return users;
+};
