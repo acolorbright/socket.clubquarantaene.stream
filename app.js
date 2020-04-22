@@ -43,7 +43,7 @@ app.get('/toilets/:room', (req, res) => {
   if (rooms[req.params.room] == null) {
     return res.redirect('../toilets');
   }
-  res.render('toiletroom', { roomName: req.params.room });
+  res.render('cubicle', { roomName: req.params.room });
 });
 
 app.get('/lostandfound', (req, res) => {

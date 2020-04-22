@@ -6,11 +6,23 @@
     <title>Toiletroom</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <script>
+      const roomName = '<%= roomName %>';
+    </script>
+
     <link rel="stylesheet" href="../public/css/main.css" />
   </head>
 
   <body>
-    <p>Toiletroom</p>
+    <p>Cubicle <%= roomName %></p>
+
+    <div class="chatWrapper">
+      <div id="message-container"></div>
+      <form id="send-container">
+        <input type="text" id="message-input" />
+        <button type="submit" id="send-button">Send</button>
+      </form>
+    </div>
 
     <div class="linkFooter">
       <a href="../mainfloor">Main Floor</a>

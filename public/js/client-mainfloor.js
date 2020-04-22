@@ -25,7 +25,7 @@ if (messageForm != null) {
     e.preventDefault();
     const message = messageInput.value;
     appendMessage(`You: ${message}`);
-    socket.emit('send-chat-message', message);
+    socket.emit('send-chat-message', roomName, message);
     messageInput.value = '';
   });
 
@@ -39,13 +39,13 @@ if (messageForm != null) {
   }
 
   appendMessage('You joined');
-  socket.emit('new-user', uData.name);
+  socket.emit('new-user', roomName, uData.name);
 
   console.log(`emited new user ${uData.name}`);
 }
 
 //================= SOCKET IO =================
-socket.on('connect', function (data) {
+socket.on('connect', function () {
   socket.emit('join', 'Server Connected to Client');
 });
 
