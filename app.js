@@ -31,11 +31,11 @@ app.use('/v1/', generalRoutes); // general routes
 
 // ROUTES//
 app.get('/mainfloor', (req, res) => {
-  res.render('mainfloor', { roomName: 'room0' });
+  res.render('mainfloor', { roomName: 'mainfloor' });
 });
 
 app.get('/toilets', (req, res) => {
-  res.render('toilets', {});
+  res.render('toilets', { roomName: 'toilets' });
 });
 
 app.get('/toilets/:room', (req, res) => {
@@ -43,6 +43,12 @@ app.get('/toilets/:room', (req, res) => {
   if (rooms[req.params.room] == null) {
     return res.redirect('../toilets');
   }
+
+  // also skip /mainfloor /toilets
+  if (req.params.room === 'mainfloor' || req.params.room === 'toilets') {
+    return res.redirect('../toilets');
+  }
+
   res.render('cubicle', { roomName: req.params.room });
 });
 
