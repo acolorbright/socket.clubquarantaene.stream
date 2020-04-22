@@ -64,3 +64,19 @@ socket.on('user-connected', function (name) {
 socket.on('user-disconnected', function (name) {
   appendMessage(`${name} disconnected`);
 });
+
+socket.on('total-users', function (amount) {
+  document.getElementById('totalUsers').innerHTML = amount;
+});
+
+socket.on('error-message', function (error) {
+  switch (error.type) {
+    case 'sending-to-wrong-room':
+      alert('you‘re not allowed to send to a room you‘re not logged in to');
+      break;
+
+    default:
+      alert(`Recieved error with unknown type: ${error.type}`);
+      break;
+  }
+});

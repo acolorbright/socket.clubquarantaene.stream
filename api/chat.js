@@ -44,6 +44,13 @@ module.exports = (io) => {
     // all chat messages
     socket.on('send-chat-message', (room, message) => {
       console.log('recieving chat message');
+      if (!rooms[room].users[socket.id]) {
+        socket.emit('error-message', { type: 'sending-to-wrong-room' });
+        return;
+      }
+
+      // check if user in room he wants to send to
+
       socket.to(room).broadcast.emit('chat-message', { message: message, name: rooms[room].users[socket.id] });
     });
 
