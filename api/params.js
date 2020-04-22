@@ -1,9 +1,9 @@
 const params = {
   // logging stuff
-  logRoomsOnConnect: true,
+  logRoomsOnConnect: false,
 
   //cubicles
-  cubiclesAmount: 21, //this is not updated dynamically on the frontend yet (X cubicles + 1 mainfloor)
+  cubiclesAmount: 20, //this is not updated dynamically on the frontend yet (X cubicles + 1 mainfloor)
   maxUsersPerCubicle: 8,
 };
 
