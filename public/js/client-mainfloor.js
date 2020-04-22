@@ -20,17 +20,16 @@ const appendMessage = (data) => {
 };
 
 if (messageForm != null) {
-  // send global message
+  // send  message
   messageForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const message = messageInput.value;
     appendMessage(`You: ${message}`);
-    socket.emit('client-chat-message', message);
+    socket.emit('send-chat-message', roomName, message);
     messageInput.value = '';
   });
 
   // username
-  console.log(sessionStorage.getItem('clubQName'));
   if (sessionStorage.getItem('clubQName') == null) {
     const name = prompt('what is your name?');
     sessionStorage.setItem('clubQName', name);
@@ -41,7 +40,8 @@ if (messageForm != null) {
 
   appendMessage('You joined');
   socket.emit('new-user-mainfloor', uData.name);
-  console.log('emited new user');
+
+  console.log(`emited new user ${uData.name}`);
 }
 
 //================= SOCKET IO =================
@@ -53,7 +53,7 @@ socket.on('messages', function (data) {
   console.log(data);
 });
 
-socket.on('server-chat-message', function (data) {
+socket.on('chat-message', function (data) {
   appendMessage(`${data.name}: ${data.message}`);
 });
 

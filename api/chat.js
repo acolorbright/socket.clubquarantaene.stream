@@ -6,8 +6,6 @@ module.exports = () => {
   // If a new user connects
   const users = {};
 
-  console.log('flgahf');
-
   io.on('connection', (socket) => {
     socket.on('join', (data) => {
       console.log(data);
@@ -20,9 +18,9 @@ module.exports = () => {
       socket.broadcast.emit('user-connected-mainfloor', name);
     });
 
-    socket.on('client-chat-message', (message) => {
+    socket.on('send-chat-message', (message) => {
       console.log('recieving chat message');
-      socket.broadcast.emit('server-chat-message', { message: message, name: users[socket.id] });
+      socket.broadcast.emit('chat-message', { message: message, name: users[socket.id] });
     });
 
     socket.on('disconnect', () => {

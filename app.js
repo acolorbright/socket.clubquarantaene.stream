@@ -41,7 +41,7 @@ for (let index = 0; index < amountOfRooms; index++) {
 }
 
 app.get('/mainfloor', (req, res) => {
-  res.render('mainfloor', {});
+  res.render('mainfloor', { roomName: 'room0' });
 });
 
 app.get('/toilets', (req, res) => {

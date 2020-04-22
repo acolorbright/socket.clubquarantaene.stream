@@ -1,7 +1,7 @@
 'use strict';
 
 //connection to socket
-const socket = io('http://localhost:1338');
+// const socket = io('http://localhost:1338');
 
 // const messageContainer = document.getElementById('message-container');
 // const messageForm = document.getElementById('send-container');
@@ -33,3 +33,4 @@ const socket = io('http://localhost:1338');
 //   messageElement.innerText = data;
 //   messageContainer.append(messageElement);
 // };
+
