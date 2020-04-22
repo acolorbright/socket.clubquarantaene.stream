@@ -21,8 +21,9 @@ module.exports = (io) => {
 
   io.on('connection', (socket) => {
     socket.on('join', (data) => {
-      console.log(data);
-      socket.emit('messages', 'Socket Connected to Server');
+      if (params.logUserSocketConnected) {
+        socket.emit('messages', 'Socket Connected to Server');
+      }
     });
 
     // ============ General Chat ============ //
@@ -30,13 +31,17 @@ module.exports = (io) => {
     socket.on('new-user', (room, name) => {
       socket.join(room);
       rooms[room].users[socket.id] = name;
-      socket.to(room).broadcast.emit('user-connected', name);
 
-      // update room specs on users joining
+      // broadcast if people entered the room
+      if (params.messageOnPeopleEnteringRoom) {
+        socket.to(room).broadcast.emit('user-connected', name);
+      }
+
+      // update cubicles numbers
       if (cubicleNamesOrdered.includes(room)) sendCubicleStatusToEveryoneInToilets();
 
       // print room stats
-      if (params.logRoomsOnConnect) {
+      if (params.logRoomsDataOnConnect) {
         console.log(rooms);
       }
     });
