@@ -13,9 +13,9 @@ module.exports = () => {
     });
 
     // ============ Main Floor ============ //
-    socket.on('new-user-mainfloor', (name) => {
+    socket.on('new-user', (name) => {
       users[socket.id] = name;
-      socket.broadcast.emit('user-connected-mainfloor', name);
+      socket.broadcast.emit('user-connected', name);
     });
 
     socket.on('send-chat-message', (message) => {
@@ -24,7 +24,7 @@ module.exports = () => {
     });
 
     socket.on('disconnect', () => {
-      socket.broadcast.emit('user-disconnected-mainfloor', users[socket.id]);
+      socket.broadcast.emit('user-disconnected', users[socket.id]);
       delete users[socket.id];
     });
 

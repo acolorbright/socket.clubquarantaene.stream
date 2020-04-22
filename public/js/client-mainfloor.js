@@ -39,7 +39,7 @@ if (messageForm != null) {
   }
 
   appendMessage('You joined');
-  socket.emit('new-user-mainfloor', uData.name);
+  socket.emit('new-user', uData.name);
 
   console.log(`emited new user ${uData.name}`);
 }
@@ -57,10 +57,10 @@ socket.on('chat-message', function (data) {
   appendMessage(`${data.name}: ${data.message}`);
 });
 
-socket.on('user-connected-mainfloor', function (name) {
+socket.on('user-connected', function (name) {
   appendMessage(`${name} connected`);
 });
 
-socket.on('user-disconnected-mainfloor', function (name) {
+socket.on('user-disconnected', function (name) {
   appendMessage(`${name} disconnected`);
 });
