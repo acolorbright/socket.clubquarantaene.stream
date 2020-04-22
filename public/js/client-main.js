@@ -48,7 +48,6 @@ if (messageForm != null) {
 //================= SOCKET IO =================
 socket.on('connect', function () {
   socket.emit('join', 'Server Connected to Client');
-
   // also put the user in the right room on connection (the room he currentliy is in on the website)
   socket.emit('new-user', roomName, uData.name);
   console.log(`emited new user ${uData.name}`);
@@ -58,17 +57,20 @@ socket.on('messages', function (data) {
   console.log(data);
 });
 
-socket.on('chat-message', function (data) {
-  appendMessage(`${data.name}: ${data.message}`);
-});
+if (messageContainer != null) {
+  // append only if messages element
+  socket.on('chat-message', function (data) {
+    appendMessage(`${data.name}: ${data.message}`);
+  });
 
-socket.on('user-connected', function (name) {
-  appendMessage(`${name} connected`);
-});
+  socket.on('user-connected', function (name) {
+    appendMessage(`${name} connected`);
+  });
 
-socket.on('user-disconnected', function (name) {
-  appendMessage(`${name} disconnected`);
-});
+  socket.on('user-disconnected', function (name) {
+    appendMessage(`${name} disconnected`);
+  });
+}
 
 socket.on('total-users', function (amount) {
   document.getElementById('totalUsers').innerHTML = amount;

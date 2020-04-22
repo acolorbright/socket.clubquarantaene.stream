@@ -5,7 +5,7 @@ const rooms = require('./rooms.js');
 // const io = require('socket.io')(socketPort);
 
 const cubicleNamesOrdered = [];
-for (let index = 1; index < params.cubiclesAmount; index++) {
+for (let index = 1; index < params.cubiclesAmount + 1; index++) {
   let roomName = `room${index}`;
   cubicleNamesOrdered.push(roomName);
 }

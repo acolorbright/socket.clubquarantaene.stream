@@ -1,6 +1,6 @@
 const params = {
   // logging stuff
-  logRoomsOnConnect: false,
+  logRoomsOnConnect: true,
 
   // general
   updateUserCount: true,
