@@ -45,10 +45,17 @@ app.get('/toilets/:room', (req, res) => {
   }
 
   // also skip /mainfloor /toilets
-  if (req.params.room === 'mainfloor' || req.params.room === 'toilets') {
+  if (req.params.room === 'mainfloor' || req.params.room === 'toilets' || req.params.room === 'lostandfound') {
     return res.redirect('../toilets');
   }
 
+  // check if room full
+  let amountOfUsers = Object.keys(rooms[req.params.room].users).length;
+  if (amountOfUsers >= params.maxUsersPerCubicle) {
+    return res.redirect('../toilets');
+  }
+
+  // go to cubicle
   res.render('cubicle', { roomName: req.params.room });
 });
 

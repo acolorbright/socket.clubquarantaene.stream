@@ -12,7 +12,7 @@ const params = {
 
   //cubicles
   cubiclesAmount: 20, //this is not updated dynamically on the frontend yet (X cubicles + 1 mainfloor)
-  maxUsersPerCubicle: 3,
+  maxUsersPerCubicle: 4,
 };
 
 module.exports = params;
