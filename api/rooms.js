@@ -14,6 +14,4 @@ rooms.mainfloor = { users: {} };
 // add main room
 rooms.toilets = { users: {} };
 
-console.log(rooms);
-
 module.exports = rooms;
