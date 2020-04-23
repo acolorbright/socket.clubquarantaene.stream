@@ -5,7 +5,7 @@ const params = {
 
   // general
   updateUserCount: true,
-  updateUserCountFrequency: 10000,
+  updateUserCountFrequency: 500,
   checkIfUserInRoom: true, //checks if the user is in the room he's trying to send a message to (checks only cubicles)
   checkOnlyIfUserInCubicle: false,
   messageOnPeopleEnteringRoom: true,

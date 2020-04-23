@@ -25,9 +25,16 @@ app.set('view engine', 'ejs');
 app.use('/public', express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
 
-// JS //
 app.use('/v1/', generalRoutes); // general routes
 // app.use('/socket/', SocketRoutes); // chat
+
+app.get('/', (req, res) => {
+  res.render('index');
+});
+
+app.get('/toilets', (req, res) => {
+  res.render('toilets', { roomName: 'toilets' });
+});
 
 // ROUTES//
 app.get('/mainfloor', (req, res) => {
@@ -57,6 +64,10 @@ app.get('/toilets/:room', (req, res) => {
 
   // go to cubicle
   res.render('cubicle', { roomName: req.params.room });
+});
+
+app.get('/secretlogin', (req, res) => {
+  res.render('login');
 });
 
 app.get('/lostandfound', (req, res) => {

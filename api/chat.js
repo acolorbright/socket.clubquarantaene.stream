@@ -70,7 +70,7 @@ module.exports = (io) => {
     socket.on('send-chat-message', (room, message) => {
       console.log('recieving chat message');
 
-      // check if user in correct room
+      // check if user in correct room, either all rooms or cubicle
       if (params.checkOnlyIfUserInCubicle) {
         if (room != 'mainfloor' && room != 'toilets' && !rooms[room].users[socket.id]) {
           socket.emit('error-message', { type: 'sending-to-wrong-room' });
@@ -97,13 +97,6 @@ module.exports = (io) => {
       });
     });
 
-    function getUserRooms(socket) {
-      return Object.entries(rooms).reduce((names, [name, room]) => {
-        if (room.users[socket.id] != null) names.push(name);
-        return names;
-      }, []);
-    }
-
     // ============ TOILETS ROOM ============ //
     socket.on('getCubiclesStatus', () => {
       sendCubicleStatus(socket);
@@ -125,6 +118,13 @@ module.exports = (io) => {
 
   return io;
 };
+
+function getUserRooms(socket) {
+  return Object.entries(rooms).reduce((names, [name, room]) => {
+    if (room.users[socket.id] != null) names.push(name);
+    return names;
+  }, []);
+}
 
 /** Returns an array with occupation numbers for all cubicles*/
 const returnCubicleOccupation = () => {
