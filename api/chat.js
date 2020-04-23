@@ -29,7 +29,7 @@ module.exports = (io) => {
     // ============ General Chat ============ //
     // new user enters
     socket.on('new-user', (room, name) => {
-      // check if cubicly isn't full, otherwise kick the user
+      // check if cubicly isn't full, otherwise kick the user and prevent from joining
       if (room != 'mainfloor' && room != 'toilets' && room != 'lostandfound') {
         let amountOfUsers = Object.keys(rooms[room].users).length;
         if (amountOfUsers >= params.maxUsersPerCubicle) {
@@ -56,9 +56,8 @@ module.exports = (io) => {
     });
 
     /* Custom leave socket for vue, as a route doesn't trigger disconnect */
+    /* If user closes window, this still does trigger*/
     socket.on('user-leave', (room) => {
-      console.log('removed user');
-      console.log(room);
       // check if room exists
       if (allChatroomNamesOrdered.includes(room)) {
         // delete user
