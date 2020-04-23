@@ -15,7 +15,8 @@ const allChatroomNamesOrdered = Object.keys(rooms);
 module.exports = (io) => {
   if (params.updateUserCount) {
     setInterval(() => {
-      io.emit('total-users', returnTotalUserCount());
+      io.emit('total-users', io.engine.clientsCount);
+      // io.emit('total-users', returnTotalUserCount()); count all users in json
     }, params.updateUserCountFrequency);
   }
 
