@@ -1,6 +1,7 @@
 'use strict';
 const params = {
   url: 'http://localhost:1337/v1/registerUser',
+  checkUrl: 'http://localhost:1337/v1/colorAvailable',
 };
 
 const requestColor = () => {
@@ -18,6 +19,18 @@ const requestColor = () => {
       document.getElementById('error').innerHTML = data.message;
     }
 
+    console.log(data); // JSON data parsed by `response.json()` call
+  });
+};
+
+const checkColor = () => {
+  let r = returnNumberString(document.getElementById('r').value);
+  let g = returnNumberString(document.getElementById('g').value);
+  let b = returnNumberString(document.getElementById('b').value);
+
+  let rgbString = `${r},${g},${b}`;
+  postData(params.checkUrl, { rgbString: rgbString }).then((data) => {
+    document.getElementById('error').innerHTML = `color available: ${data.available}`;
     console.log(data); // JSON data parsed by `response.json()` call
   });
 };
