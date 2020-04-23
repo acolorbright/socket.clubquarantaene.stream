@@ -4,7 +4,6 @@ const { uuid } = require('uuidv4');
 
 require('dotenv').config();
 
-// example route
 router.post('/registerUser', async function (req, res) {
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   // [] check if valid color
@@ -16,14 +15,32 @@ router.post('/registerUser', async function (req, res) {
   let isFree = true;
 
   if (isFree) {
-    res.status(200).json({ message: 'color registered', userName: rgbString, uuid: userID });
+    res.status(200).json({ available: true, message: 'color registered', userName: rgbString, uuid: userID });
   } else {
-    res.status(400).json({ message: 'color already taken' });
+    res.status(200).json({ available: false, message: 'color already taken' });
   }
 });
 
 router.get('/registerUser', async function (req, res) {
   res.status(200).send('api v1 running ;)');
+});
+
+router.get('/colorAvailable', async function (req, res) {
+  res.status(200).send('api v1 running ;)');
+});
+
+router.post('/colorAvailable', async function (req, res) {
+  let rgbString = req.body.rgbString;
+  // [] check if valid color
+  // [] do the check if the number is free
+
+  let isFree = true;
+
+  if (isFree) {
+    res.status(200).json({ available: true });
+  } else {
+    res.status(200).json({ available: false });
+  }
 });
 
 router.get('/test', async function (req, res) {
