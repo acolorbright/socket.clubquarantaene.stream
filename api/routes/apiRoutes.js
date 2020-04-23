@@ -22,4 +22,12 @@ router.post('/registerUser', async function (req, res) {
   }
 });
 
+router.get('/registerUser', async function (req, res) {
+  res.status(200).send('api v1 running ;)');
+});
+
+router.get('/test', async function (req, res) {
+  res.status(200).send('api v1 running ;)');
+});
+
 module.exports = router;
