@@ -13,7 +13,7 @@ const requestColor = () => {
   postData(params.url, { rgbString: rgbString, timestamp: timestamp }).then((data) => {
     if (data.userName) {
       sessionStorage.setItem('clubQName', data.userName);
-      window.location.href = './mainfloor';
+      //   window.location.href = './mainfloor';
     } else {
       document.getElementById('error').innerHTML = data.message;
     }

@@ -1,9 +1,20 @@
+require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const { uuid } = require('uuidv4');
-const database = require('../database');
 
-require('dotenv').config();
+// database
+const MongoClient = require('mongodb').MongoClient;
+const dbBase = process.env.MONGODB;
+const dbName = process.env.DBNAME;
+const mongoUrl = `${dbBase}/${dbName}`;
+const db = MongoClient.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
+  if (err) return console.log(err);
+
+  console.log(`Connected MongoDB: ${mongoUrl}`);
+  console.log(`Database: ${dbName}`);
+  return client.db(dbName);
+});
 
 router.post('/registerUser', async function (req, res) {
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
