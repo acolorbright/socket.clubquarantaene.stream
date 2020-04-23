@@ -3,7 +3,7 @@
 console.log('using main js');
 
 // eslint-disable-next-line no-undef
-const socket = io('http://localhost:1338');
+const socket = io('http://localhost:1337');
 
 // ============ Username Handling ============ //
 
