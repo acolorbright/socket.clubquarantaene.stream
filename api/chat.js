@@ -68,8 +68,6 @@ module.exports = (io) => {
 
     // all chat messages
     socket.on('send-chat-message', (room, message) => {
-      console.log('recieving chat message');
-
       // check if user in correct room, either all rooms or cubicle
       if (params.checkOnlyIfUserInCubicle) {
         if (room != 'mainfloor' && room != 'toilets' && !rooms[room].users[socket.id]) {
@@ -83,7 +81,11 @@ module.exports = (io) => {
         }
       }
 
-      socket.to(room).broadcast.emit('chat-message', { message: message, name: rooms[room].users[socket.id] });
+      if (room === 'mainfloor') {
+        socket.to(room).volatile.emit('chat-message', { message: message, name: rooms[room].users[socket.id] });
+      } else {
+        socket.to(room).broadcast.emit('chat-message', { message: message, name: rooms[room].users[socket.id] });
+      }
     });
 
     // removes user from all rooms, if disconnected
