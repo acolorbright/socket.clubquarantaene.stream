@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
-const generalRoutes = require('./api/routes/generalRoutes');
+const bodyParser = require('body-parser');
+const apiRoutes = require('./api/routes/apiRoutes');
 // eslint-disable-next-line no-unused-vars
 const params = require('./api/params.js');
 const rooms = require('./api/rooms.js');
+
 // eslint-disable-next-line no-unused-vars
 require('dotenv').config();
 
@@ -20,13 +22,13 @@ app.use((req, res, next) => {
   next();
 });
 
-// EXPRESS SETUP//
+// EXPRESS SETUP //
 app.set('view engine', 'ejs');
 app.use('/public', express.static(__dirname + '/public'));
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ extended: true }));
 
-app.use('/v1/', generalRoutes); // general routes
-// app.use('/socket/', SocketRoutes); // chat
+app.use('/v1/', apiRoutes); // other api Routes
 
 app.get('/', (req, res) => {
   res.render('index');

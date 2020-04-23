@@ -13,9 +13,10 @@
     <p>Login for Chat</p>
 
     <div class="loginWrapper">
-      <input type="number" id="r" name="quantity" min="0" max="255" />
-      <input type="number" id="g" name="quantity" min="0" max="255" />
-      <input type="number" id="b" name="quantity" min="0" max="255" />
+      r <input type="number" value="0" id="r" name="quantity" min="0" max="255" onkeyup="imposeMinMax(this)" /> g <input type="number" value="0" id="g" name="quantity" min="0" max="255" onkeyup="imposeMinMax(this)" /> b
+      <input type="number" value="0" id="b" name="quantity" min="0" max="255" onkeyup="imposeMinMax(this)" />
+      <button type="button" onClick="requestColor()" id="requestColor">Request Color</button>
+      <p id="error"></p>
     </div>
 
     <script src="public/js/client-login.js"></script>

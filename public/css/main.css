@@ -43,4 +43,10 @@ p {
     .cubicleWrapper .cubicle a {
       color: white; }
 
+/* ============ Login ============*/
+.loginWrapper {
+  margin: 12px; }
+  .loginWrapper #error {
+    color: red; }
+
 /* ============ Lost and Found ============*/
