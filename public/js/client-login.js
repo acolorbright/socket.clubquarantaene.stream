@@ -1,8 +1,14 @@
 'use strict';
-const params = {
-  url: 'http://localhost:1337/v1/registerUser',
-  checkUrl: 'http://localhost:1337/v1/colorAvailable',
+let params = {
+  url: 'https://socket.clubquarantaene.stream/v1/registerUser',
+  checkUrl: 'https://socket.clubquarantaene.stream/v1/colorAvailable',
 };
+
+// change the urls online
+if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+  params.url = 'http://localhost:1337/v1/registerUser';
+  params.checkUrl = 'http://localhost:1337/v1/colorAvailable';
+}
 
 const requestColor = () => {
   let r = returnNumberString(document.getElementById('r').value);
@@ -14,7 +20,7 @@ const requestColor = () => {
   postData(params.url, { rgbString: rgbString, timestamp: timestamp }).then((data) => {
     if (data.userName) {
       sessionStorage.setItem('clubQName', data.userName);
-      //   window.location.href = './mainfloor';
+      window.location.href = './mainfloor';
     } else {
       document.getElementById('error').innerHTML = data.message;
     }
