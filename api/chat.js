@@ -30,11 +30,12 @@ module.exports = (io) => {
     // new user enters
     socket.on('new-user', (room, name) => {
       // check if cubicly isn't full, otherwise kick the user
-
-      let amountOfUsers = Object.keys(rooms[room].users).length;
-      if (amountOfUsers >= params.maxUsersPerCubicle) {
-        socket.emit('error-message', { type: 'cubicle-full' });
-        return;
+      if (room != 'mainfloor' && room != 'toilets' && room != 'lostandfound') {
+        let amountOfUsers = Object.keys(rooms[room].users).length;
+        if (amountOfUsers >= params.maxUsersPerCubicle) {
+          socket.emit('error-message', { type: 'cubicle-full' });
+          return;
+        }
       }
 
       socket.join(room);
@@ -51,6 +52,18 @@ module.exports = (io) => {
       // print room stats
       if (params.logRoomsDataOnConnect) {
         console.log(rooms);
+      }
+    });
+
+    /* Custom leave socket for vue, as a route doesn't trigger disconnect */
+    socket.on('user-leave', (room) => {
+      console.log('removed user');
+      console.log(room);
+      // check if room exists
+      if (allChatroomNamesOrdered.includes(room)) {
+        // delete user
+        delete rooms[room].users[socket.id];
+        socket.leave(room);
       }
     });
 
