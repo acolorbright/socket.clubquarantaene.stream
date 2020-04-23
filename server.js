@@ -7,7 +7,7 @@ const ip = process.env.IP || '127.0.0.1';
 const server = http.createServer(app);
 const socketPort = process.env.SOCKETPORT || 1337;
 
-const io = require('socket.io')(1337);
+const io = require('socket.io')(server);
 // eslint-disable-next-line no-unused-vars
 const sockets = require('./api/chat')(io);
 
