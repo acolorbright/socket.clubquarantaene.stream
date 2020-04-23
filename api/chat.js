@@ -29,6 +29,14 @@ module.exports = (io) => {
     // ============ General Chat ============ //
     // new user enters
     socket.on('new-user', (room, name) => {
+      // check if cubicly isn't full, otherwise kick the user
+
+      let amountOfUsers = Object.keys(rooms[room].users).length;
+      if (amountOfUsers >= params.maxUsersPerCubicle) {
+        socket.emit('error-message', { type: 'cubicle-full' });
+        return;
+      }
+
       socket.join(room);
       rooms[room].users[socket.id] = name;
 
