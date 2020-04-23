@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { uuid } = require('uuidv4');
+const database = require('../database');
 
 require('dotenv').config();
 
