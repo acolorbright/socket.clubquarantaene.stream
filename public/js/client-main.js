@@ -1,7 +1,4 @@
 'use strict';
-
-console.log('using main js');
-
 // ============ Username Handling ============ //
 let userAllowedIn = false;
 
@@ -84,9 +81,11 @@ if (userAllowedIn) {
     document.getElementById('totalUsers').innerHTML = amount;
   });
 
-  socket.on('cubicleUsers', function (colorArray) {
+  socket.on('cubicleColors', function (colorArray) {
     console.log(colorArray);
   });
+
+  //================= ERRORS =================
 
   socket.on('error-message', function (error) {
     switch (error.type) {
@@ -102,4 +101,24 @@ if (userAllowedIn) {
         break;
     }
   });
+
+  //================= TOILETS =================
+  // eslint-disable-next-line no-undef
+  if (roomName == 'toilets') {
+    socket.emit('getCubiclesStatus');
+
+    socket.on('cubicleStatus', function (cubicleDataArray) {
+      document.querySelectorAll('.cubicle').forEach(function (cubicle, i) {
+        // update string
+        cubicle.querySelector('.occupied').innerHTML = cubicleDataArray[i];
+
+        // hide link if full
+        if (cubicleDataArray[i] === 'full') {
+          cubicle.querySelector('.enter-cubicle-link').style.visibility = 'hidden';
+        } else {
+          cubicle.querySelector('.enter-cubicle-link').style.visibility = 'visible';
+        }
+      });
+    });
+  }
 }

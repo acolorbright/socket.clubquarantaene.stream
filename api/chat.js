@@ -49,23 +49,17 @@ module.exports = (io) => {
 
       // broadcast if people entered the room
       if (params.messageOnPeopleEnteringRoom) {
-        socket.to(room).broadcast.emit('user-connected', name);
+        socket.to(room).emit('user-connected', name);
       }
 
       // update cubicles numbers
       if (cubicleNamesOrdered.includes(room)) sendCubicleStatusToEveryoneInToilets();
 
-      //if cubicle, send current colors in room
-      // if (cubicleNamesOrdered.includes(room)) {
-      //   let colors = [];
-      //   const keys = Object.keys(rooms[room].users);
-      //   console.log(keys);
-      //   // for (const key of keys) {
-      //   //   console.log(key);
-      //   // }
-
-      //   // socket.to(room).broadcast.emit('cubicleUsers', name);
-      // }
+      //if cubicle, send current colors update to room
+      if (cubicleNamesOrdered.includes(room)) {
+        console.log(returnColorsInRoom(room));
+        io.in(room).emit('cubicleColors', returnColorsInRoom(room));
+      }
 
       // print room stats
       if (params.logRoomsDataOnConnect.log) {
@@ -90,9 +84,9 @@ module.exports = (io) => {
 
     // all chat messages
     socket.on('send-chat-message', (room, message, userId) => {
-      console.log(userId);
       if (userId === undefined) {
         socket.emit('error-message', { type: 'no-uuid-sent' });
+        return;
       }
 
       // check if user in correct room, either all rooms or cubicle
@@ -111,14 +105,14 @@ module.exports = (io) => {
       if (room === 'mainfloor') {
         socket.to(room).volatile.emit('chat-message', { message: message, name: rooms[room].users[socket.id].name });
       } else {
-        socket.to(room).broadcast.emit('chat-message', { message: message, name: rooms[room].users[socket.id].name });
+        socket.to(room).emit('chat-message', { message: message, name: rooms[room].users[socket.id].name });
       }
     });
 
     // removes user from all rooms, if disconnected
     socket.on('disconnect', () => {
       getUserRooms(socket).forEach((room) => {
-        socket.to(room).broadcast.emit('user-disconnected', rooms[room].users[socket.id].name);
+        socket.to(room).emit('user-disconnected', rooms[room].users[socket.id].name);
         delete rooms[room].users[socket.id];
 
         // update room specs on users joining
@@ -173,4 +167,15 @@ const returnTotalUserCount = () => {
   });
 
   return users;
+};
+
+const returnColorsInRoom = (room) => {
+  let colorData = {
+    colors: [],
+  };
+  for (let [, data] of Object.entries(rooms[room].users)) {
+    // user data before data not used so empty
+    colorData.colors.push(data.name); // pushes the name (color) of that user
+  }
+  return colorData;
 };
