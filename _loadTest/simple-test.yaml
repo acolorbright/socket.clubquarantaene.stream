@@ -1,0 +1,41 @@
+config:
+  # target: 'http://localhost:1337'
+  target: 'https://socket.clubquarantaene.stream/'
+  socketio:
+    transports: ['websocket']
+  phases:
+    - duration: 60 # Run scenario for 10 seconds
+      arrivalCount: 1200 # Create 20 virtual users per scenario
+scenarios:
+  - name: 'connecting and sending one message'
+    weight: 0
+    engine: 'socketio'
+    flow:
+      - emit:
+          channel: 'new-user'
+          data: { room: 'mainfloor', uuid: '1234-1234-1234-1234', name: '001,001,001' }
+      - think: 4 # do nothing for X seconds, then disconnect
+      - emit:
+          channel: 'send-chat-message'
+          data: { room: 'mainfloor', message: 'Hello! This is a message with a random Number: {{ $randomString() }}', uuid: '1234-1234-1234-1234' }
+      - think: 4 # do nothing for X seconds, then disconnect
+      - emit:
+          channel: 'send-chat-message'
+          data: { room: 'mainfloor', message: 'Hello! This is a message with a random Number: {{ $randomString() }}', uuid: '1234-1234-1234-1234' }
+      - think: 4 # do nothing for X seconds, then disconnect
+      - emit:
+          channel: 'send-chat-message'
+          data: { room: 'mainfloor', message: 'Hello! This is a message with a random Number: {{ $randomString() }}', uuid: '1234-1234-1234-1234' }
+      - think: 4 # do nothing for X seconds, then disconnect
+      - emit:
+          channel: 'send-chat-message'
+          data: { room: 'mainfloor', message: 'Hello! This is a message with a random Number: {{ $randomString() }}', uuid: '1234-1234-1234-1234' }
+      - think: 110
+  - name: 'connecting and doing nothing'
+    weight: 100
+    engine: 'socketio'
+    flow:
+      - emit:
+          channel: 'new-user'
+          data: { room: 'mainfloor', uuid: '1234-1234-1234-1234', name: '001,001,001' }
+      - think: 120 # do nothing for X seconds, then disconnect
