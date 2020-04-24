@@ -82,7 +82,7 @@ if (userAllowedIn) {
   });
 
   socket.on('cubicleColors', function (colorArray) {
-    console.log(colorArray);
+    console.log('cubicle user colors', colorArray);
   });
 
   //================= ERRORS =================

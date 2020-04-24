@@ -57,7 +57,6 @@ module.exports = (io) => {
 
       //if cubicle, send current colors update to room
       if (cubicleNamesOrdered.includes(room)) {
-        console.log(returnColorsInRoom(room));
         io.in(room).emit('cubicleColors', returnColorsInRoom(room));
       }
 
