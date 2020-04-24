@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/img2001jpg/socket.clubquarantaene.stream#readme",
   "dependencies": {
+    "bad-words": "^3.0.3",
     "dotenv": "^8.2.0",
     "ejs": "^3.0.2",
     "express": "^4.17.1",

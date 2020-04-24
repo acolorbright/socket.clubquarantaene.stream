@@ -1,6 +1,8 @@
 require('dotenv').config();
 const params = require('./params.js');
 const rooms = require('./rooms.js');
+var Filter = require('bad-words'),
+  filter = new Filter();
 // const socketPort = process.env.SOCKETPORT || 1338;
 // const io = require('socket.io')(socketPort);
 
@@ -102,13 +104,21 @@ module.exports = (io) => {
     // all chat messages
     socket.on('send-chat-message', (data) => {
       const room = data.room;
-      const message = data.message;
+      let message = data.message;
       const uuid = data.uuid;
 
       if (uuid === undefined) {
         socket.emit('error-message', { type: 'no-uuid-sent' });
         return;
       }
+
+      // check for bad word -> on mainfloor don't pass
+      if (room === 'mainfloor' && filter.isProfane(message)) {
+        return;
+      }
+
+      // clean text
+      message = filter.clean(message);
 
       // catch for people using old site
       // check if room is valable
