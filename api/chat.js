@@ -29,7 +29,7 @@ module.exports = (io) => {
 
     // ============ General Chat ============ //
     // new user enters
-    socket.on('new-user', (room, name) => {
+    socket.on('new-user', (room, uuid, name) => {
       // check if cubicly isn't full, otherwise kick the user and prevent from joining
       if (room != 'mainfloor' && room != 'toilets' && room != 'lostandfound') {
         let amountOfUsers = Object.keys(rooms[room].users).length;
@@ -40,7 +40,12 @@ module.exports = (io) => {
       }
 
       socket.join(room);
-      rooms[room].users[socket.id] = name;
+      rooms[room].users[socket.id] = {
+        userId: uuid,
+        name: name,
+      };
+
+      // console.log(rooms);
 
       // broadcast if people entered the room
       if (params.messageOnPeopleEnteringRoom) {
@@ -50,9 +55,25 @@ module.exports = (io) => {
       // update cubicles numbers
       if (cubicleNamesOrdered.includes(room)) sendCubicleStatusToEveryoneInToilets();
 
+      //if cubicle, send current colors in room
+      // if (cubicleNamesOrdered.includes(room)) {
+      //   let colors = [];
+      //   const keys = Object.keys(rooms[room].users);
+      //   console.log(keys);
+      //   // for (const key of keys) {
+      //   //   console.log(key);
+      //   // }
+
+      //   // socket.to(room).broadcast.emit('cubicleUsers', name);
+      // }
+
       // print room stats
-      if (params.logRoomsDataOnConnect) {
-        console.log(rooms);
+      if (params.logRoomsDataOnConnect.log) {
+        if (params.logRoomsDataOnConnect.logAll) {
+          console.log(JSON.stringify(rooms, null, 2));
+        } else {
+          console.log(rooms);
+        }
       }
     });
 
@@ -71,28 +92,28 @@ module.exports = (io) => {
     socket.on('send-chat-message', (room, message) => {
       // check if user in correct room, either all rooms or cubicle
       if (params.checkOnlyIfUserInCubicle) {
-        if (room != 'mainfloor' && room != 'toilets' && !rooms[room].users[socket.id]) {
+        if (room != 'mainfloor' && room != 'toilets' && !rooms[room].users[socket.id].userId) {
           socket.emit('error-message', { type: 'sending-to-wrong-room' });
           return;
         }
       } else {
-        if (!rooms[room].users[socket.id]) {
+        if (!rooms[room].users[socket.id].userId) {
           socket.emit('error-message', { type: 'sending-to-wrong-room' });
           return;
         }
       }
 
       if (room === 'mainfloor') {
-        socket.to(room).volatile.emit('chat-message', { message: message, name: rooms[room].users[socket.id] });
+        socket.to(room).volatile.emit('chat-message', { message: message, name: rooms[room].users[socket.id].name });
       } else {
-        socket.to(room).broadcast.emit('chat-message', { message: message, name: rooms[room].users[socket.id] });
+        socket.to(room).broadcast.emit('chat-message', { message: message, name: rooms[room].users[socket.id].name });
       }
     });
 
     // removes user from all rooms, if disconnected
     socket.on('disconnect', () => {
       getUserRooms(socket).forEach((room) => {
-        socket.to(room).broadcast.emit('user-disconnected', rooms[room].users[socket.id]);
+        socket.to(room).broadcast.emit('user-disconnected', rooms[room].users[socket.id].name);
         delete rooms[room].users[socket.id];
 
         // update room specs on users joining

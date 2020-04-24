@@ -24,7 +24,7 @@ MongoClient.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true 
 router.post('/registerUser', async function (req, res) {
   const rgbString = req.body.rgbString;
   // [] check if valid color
-  //let allColors = await db.collection(params.usersCollectionName).find().toArray();
+  //let allColors = await db.collection(params.usersCollectionName).find().toArray(); // example request
 
   let query = { name: rgbString };
   let user = await db.collection(params.usersCollectionName).find(query).toArray();

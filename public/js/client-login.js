@@ -20,6 +20,7 @@ const requestColor = () => {
   postData(params.url, { rgbString: rgbString, timestamp: timestamp }).then((data) => {
     if (data.userName) {
       sessionStorage.setItem('clubQName', data.userName);
+      sessionStorage.setItem('clubQUuid', data.uuid);
       window.location.href = './mainfloor';
     } else {
       document.getElementById('error').innerHTML = data.message;

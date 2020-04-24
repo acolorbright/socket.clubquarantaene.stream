@@ -1,6 +1,9 @@
 const params = {
   // logging stuff
-  logRoomsDataOnConnect: false,
+  logRoomsDataOnConnect: {
+    log: true,
+    logAll: true,
+  },
   logUserSocketConnected: true,
 
   // general
