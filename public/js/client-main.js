@@ -45,7 +45,7 @@ if (userAllowedIn) {
       e.preventDefault();
       const message = messageInput.value;
       appendMessage(`You: ${message}`);
-      socket.emit('send-chat-message', roomName, message);
+      socket.emit('send-chat-message', roomName, message, uData.uuid);
       messageInput.value = '';
     });
 
@@ -92,6 +92,9 @@ if (userAllowedIn) {
     switch (error.type) {
       case 'sending-to-wrong-room':
         alert('you‘re not allowed to send to a room you‘re not logged in to');
+        break;
+      case 'no-uuid-sent':
+        alert('you need to send a uuid with your messages');
         break;
 
       default:

@@ -89,7 +89,12 @@ module.exports = (io) => {
     });
 
     // all chat messages
-    socket.on('send-chat-message', (room, message) => {
+    socket.on('send-chat-message', (room, message, userId) => {
+      console.log(userId);
+      if (userId === undefined) {
+        socket.emit('error-message', { type: 'no-uuid-sent' });
+      }
+
       // check if user in correct room, either all rooms or cubicle
       if (params.checkOnlyIfUserInCubicle) {
         if (room != 'mainfloor' && room != 'toilets' && !rooms[room].users[socket.id].userId) {

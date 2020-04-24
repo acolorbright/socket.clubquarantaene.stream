@@ -1,7 +1,7 @@
 const params = {
   // logging stuff
   logRoomsDataOnConnect: {
-    log: true,
+    log: false,
     logAll: true,
   },
   logUserSocketConnected: true,
