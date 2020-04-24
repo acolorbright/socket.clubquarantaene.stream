@@ -6,13 +6,19 @@ const params = require('../params.js');
 
 // database
 const MongoClient = require('mongodb').MongoClient;
-const dbBase = process.env.MONGODB;
+const dbBase = process.env.MONGODBIP;
 const dbName = process.env.DBNAME;
-const mongoUrl = `${dbBase}/${dbName}`;
+const dbUsr = process.env.MDBNAME;
+const dbPw = process.env.MDBPW;
+const mongoUrl = `mongodb://${dbUsr}:${dbPw}@${dbBase}/${dbName}/mydb?authSource=admin`;
+
+console.log(mongoUrl);
+
 let db;
 MongoClient.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
   if (err) return console.log(err);
   db = client.db(dbName);
+
   console.log(`Connected MongoDB: ${mongoUrl}`);
   console.log(`Database: ${dbName}`);
 });
@@ -67,6 +73,7 @@ router.post('/colorAvailable', async function (req, res) {
     res.status(200).json({ available: true });
   }
 
+  // original testing
   // let isFree = true;
   // if (isFree) {
   //   res.status(200).json({ available: true });
