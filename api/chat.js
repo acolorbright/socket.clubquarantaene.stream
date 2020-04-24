@@ -34,6 +34,20 @@ module.exports = (io) => {
       const uuid = data.uuid;
       const name = data.name;
 
+      // check if room is valable
+      if (!allChatroomNamesOrdered.includes(room)) {
+        console.log('requested wrong room');
+        return;
+      }
+
+      // return if user not there // this is just a terrible quickfix for now
+      // try {
+      //   let random = rooms[room].users;
+      // } catch (e) {
+      //   console.log('skipped because new user error', e);
+      //   return;
+      // }
+
       // check if cubicly isn't full, otherwise kick the user and prevent from joining
       if (room != 'mainfloor' && room != 'toilets' && room != 'lostandfound') {
         let amountOfUsers = Object.keys(rooms[room].users).length;
@@ -53,7 +67,7 @@ module.exports = (io) => {
 
       // broadcast if people entered the room
       if (params.messageOnPeopleEnteringRoom) {
-        socket.to(room).emit('user-connected', name);
+        // socket.to(room).emit('user-connected', name);
       }
 
       // update cubicles numbers
@@ -91,12 +105,25 @@ module.exports = (io) => {
       const message = data.message;
       const uuid = data.uuid;
 
-      console.log(room, message, uuid);
-
       if (uuid === undefined) {
         socket.emit('error-message', { type: 'no-uuid-sent' });
         return;
       }
+
+      // catch for people using old site
+      // check if room is valable
+      if (!allChatroomNamesOrdered.includes(room)) {
+        console.log('requested wrong room');
+        return;
+      }
+
+      // return if user not there // this is just a terrible fix and must be picked
+      // try {
+      //   let random1 = rooms[room].users[socket.id].uuid;
+      // } catch (e) {
+      //   console.log('skipped because new user error', e);
+      //   return;
+      // }
 
       // check if user in correct room, either all rooms or cubicle
       if (params.checkOnlyIfUserInCubicle) {
@@ -121,7 +148,7 @@ module.exports = (io) => {
     // removes user from all rooms, if disconnected
     socket.on('disconnect', () => {
       getUserRooms(socket).forEach((room) => {
-        socket.to(room).emit('user-disconnected', rooms[room].users[socket.id].name);
+        // socket.to(room).emit('user-disconnected', rooms[room].users[socket.id].name);
         delete rooms[room].users[socket.id];
 
         // update room specs on users joining

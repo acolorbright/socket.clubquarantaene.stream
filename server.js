@@ -1,5 +1,6 @@
 require('dotenv').config();
 const http = require('http');
+// http.globalAgent.maxSockets = Infinity;
 const app = require('./app');
 
 const port = process.env.PORT || 1337;
