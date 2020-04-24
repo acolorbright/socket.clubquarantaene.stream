@@ -29,7 +29,11 @@ module.exports = (io) => {
 
     // ============ General Chat ============ //
     // new user enters
-    socket.on('new-user', (room, uuid, name) => {
+    socket.on('new-user', (data) => {
+      const room = data.room;
+      const uuid = data.uuid;
+      const name = data.name;
+
       // check if cubicly isn't full, otherwise kick the user and prevent from joining
       if (room != 'mainfloor' && room != 'toilets' && room != 'lostandfound') {
         let amountOfUsers = Object.keys(rooms[room].users).length;
@@ -41,7 +45,7 @@ module.exports = (io) => {
 
       socket.join(room);
       rooms[room].users[socket.id] = {
-        userId: uuid,
+        uuid: uuid,
         name: name,
       };
 
@@ -82,20 +86,26 @@ module.exports = (io) => {
     });
 
     // all chat messages
-    socket.on('send-chat-message', (room, message, userId) => {
-      if (userId === undefined) {
+    socket.on('send-chat-message', (data) => {
+      const room = data.room;
+      const message = data.message;
+      const uuid = data.uuid;
+
+      console.log(room, message, uuid);
+
+      if (uuid === undefined) {
         socket.emit('error-message', { type: 'no-uuid-sent' });
         return;
       }
 
       // check if user in correct room, either all rooms or cubicle
       if (params.checkOnlyIfUserInCubicle) {
-        if (room != 'mainfloor' && room != 'toilets' && !rooms[room].users[socket.id].userId) {
+        if (room != 'mainfloor' && room != 'toilets' && !rooms[room].users[socket.id].uuid) {
           socket.emit('error-message', { type: 'sending-to-wrong-room' });
           return;
         }
       } else {
-        if (!rooms[room].users[socket.id].userId) {
+        if (!rooms[room].users[socket.id].uuid) {
           socket.emit('error-message', { type: 'sending-to-wrong-room' });
           return;
         }

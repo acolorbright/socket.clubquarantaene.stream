@@ -42,7 +42,7 @@ if (userAllowedIn) {
       e.preventDefault();
       const message = messageInput.value;
       appendMessage(`You: ${message}`);
-      socket.emit('send-chat-message', roomName, message, uData.uuid);
+      socket.emit('send-chat-message', { room: roomName, message: message, uuid: uData.uuid });
       messageInput.value = '';
     });
 
@@ -54,7 +54,7 @@ if (userAllowedIn) {
   socket.on('connect', function () {
     socket.emit('join', 'Server Connected to Client');
     // also put the user in the right room on connection (the room he currentliy is in on the website)
-    socket.emit('new-user', roomName, uData.uuid, uData.name);
+    socket.emit('new-user', { room: roomName, uuid: uData.uuid, name: uData.name });
     console.log(`emited new user ${uData.name}`);
   });
 
