@@ -12,8 +12,6 @@ const dbUsr = process.env.MDBNAME;
 const dbPw = process.env.MDBPW;
 const mongoUrl = `mongodb://${dbUsr}:${dbPw}@${dbBase}/${dbName}/mydb?authSource=admin`;
 
-console.log(mongoUrl);
-
 let db;
 MongoClient.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
   if (err) return console.log(err);
