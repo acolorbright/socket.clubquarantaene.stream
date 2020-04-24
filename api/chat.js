@@ -69,7 +69,7 @@ module.exports = (io) => {
 
       // broadcast if people entered the room
       if (params.messageOnPeopleEnteringRoom) {
-        // socket.to(room).emit('user-connected', name);
+        socket.to(room).emit('user-connected', name);
       }
 
       // update cubicles numbers
