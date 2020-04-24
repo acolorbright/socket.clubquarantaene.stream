@@ -20,6 +20,9 @@ const params = {
   //db
   usersCollectionName: 'users',
   messagesCollectionName: 'messages',
+
+  // careful
+  useDatabase: true,
 };
 
 module.exports = params;

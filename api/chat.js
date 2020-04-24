@@ -136,6 +136,10 @@ module.exports = (io) => {
     socket.on('messages', (data) => {
       socket.emit('broad', data);
     });
+
+    socket.on('testThing', (message1, message2) => {
+      console.log(message1, message2);
+    });
   });
 
   return io;
