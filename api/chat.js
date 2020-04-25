@@ -43,12 +43,12 @@ module.exports = (io) => {
       }
 
       // return if user not there // this is just a terrible quickfix for now
-      // try {
-      //   let random = rooms[room].users;
-      // } catch (e) {
-      //   console.log('skipped because new user error', e);
-      //   return;
-      // }
+      try {
+        let random = rooms[room].users;
+      } catch (e) {
+        // console.log('skipped because new user error', e);
+        return;
+      }
 
       // check if cubicly isn't full, otherwise kick the user and prevent from joining
       if (room != 'mainfloor' && room != 'toilets' && room != 'lostandfound') {
@@ -128,12 +128,12 @@ module.exports = (io) => {
       }
 
       // return if user not there // this is just a terrible fix and must be picked
-      // try {
-      //   let random1 = rooms[room].users[socket.id].uuid;
-      // } catch (e) {
-      //   console.log('skipped because new user error', e);
-      //   return;
-      // }
+      try {
+        let random1 = rooms[room].users[socket.id].uuid;
+      } catch (e) {
+        // console.log('skipped because new user error YYY', e);
+        return;
+      }
 
       // check if user in correct room, either all rooms or cubicle
       if (params.checkOnlyIfUserInCubicle) {
