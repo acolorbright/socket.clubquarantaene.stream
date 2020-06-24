@@ -15,9 +15,10 @@ const requestColor = () => {
   let g = returnNumberString(document.getElementById('g').value);
   let b = returnNumberString(document.getElementById('b').value);
   let timestamp = Date.now();
+  let forceLogin = document.getElementById('forceLogin').checked;
 
   let rgbString = `${r},${g},${b}`;
-  postData(params.url, { rgbString: rgbString, timestamp: timestamp }).then((data) => {
+  postData(params.url, { rgbString: rgbString, timestamp: timestamp, force: forceLogin }).then((data) => {
     if (data.userName) {
       sessionStorage.setItem('clubQName', data.userName);
       sessionStorage.setItem('clubQUuid', data.uuid);
@@ -35,8 +36,10 @@ const checkColor = () => {
   let g = returnNumberString(document.getElementById('g').value);
   let b = returnNumberString(document.getElementById('b').value);
 
+  let forceLogin = document.getElementById('forceLogin').checked;
+
   let rgbString = `${r},${g},${b}`;
-  postData(params.checkUrl, { rgbString: rgbString }).then((data) => {
+  postData(params.checkUrl, { rgbString: rgbString, force: forceLogin }).then((data) => {
     document.getElementById('error').innerHTML = `color available: ${data.available}`;
     console.log(data); // JSON data parsed by `response.json()` call
   });

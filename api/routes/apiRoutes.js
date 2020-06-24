@@ -26,6 +26,8 @@ if (params.useDatabase) {
 
 router.post('/registerUser', async function (req, res) {
   const rgbString = req.body.rgbString;
+  const forceLogin = req.body.force;
+
   // [] check if valid color
   //let allColors = await db.collection(params.usersCollectionName).find().toArray(); // example request
 
@@ -33,7 +35,18 @@ router.post('/registerUser', async function (req, res) {
     let query = { name: rgbString };
     let user = await db.collection(params.usersCollectionName).find(query).toArray();
 
-    if (user.length > 0) {
+    console.log(forceLogin);
+    if (forceLogin) {
+      // right now the foce login just adds a new user with the same name
+      // it's the same as if the db was off (i believe so, testing didn't show any problems)
+      const userID = uuid();
+      const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+      var newUSer = { name: rgbString, timestamp: new Date(), userID: userID, ip: ip, globalBlock: false };
+      await db.collection(params.usersCollectionName).insertOne(newUSer, function (err, res) {
+        if (err) throw err;
+      });
+      res.status(200).json({ available: true, message: 'color registered', userName: rgbString, uuid: userID });
+    } else if (user.length > 0) {
       res.status(200).json({ available: false, message: 'color already taken' });
     } else {
       const userID = uuid();
@@ -68,11 +81,15 @@ router.get('/colorAvailable', async function (req, res) {
 router.post('/colorAvailable', async function (req, res) {
   let rgbString = req.body.rgbString;
   let query = { name: rgbString };
+  const forceLogin = req.body.force;
 
   if (params.useDatabase) {
     let user = await db.collection(params.usersCollectionName).find(query).toArray();
 
-    if (user.length > 0) {
+    if (forceLogin) {
+      let isTaken = user.length > 0 ? 'although already taken' : 'not taken anyway';
+      res.status(200).json({ message: `forced Login, ${isTaken}`, available: true });
+    } else if (user.length > 0) {
       res.status(200).json({ available: false });
     } else {
       res.status(200).json({ available: true });
