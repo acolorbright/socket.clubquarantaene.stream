@@ -27,7 +27,7 @@ if (userAllowedIn) {
   }
 
   // eslint-disable-next-line no-undef
-  const socket = io('http://localhost:1337');
+  const socket = io(urlName);
 
   // ============ Chat Interface Functions  ============ //
   const messageContainer = document.getElementById('message-container');
