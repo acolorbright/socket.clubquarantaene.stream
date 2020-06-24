@@ -21,6 +21,11 @@ if (sessionStorage.getItem('clubQName') == null || sessionStorage.getItem('clubQ
 }
 
 if (userAllowedIn) {
+  let urlName = 'https://socket.clubquarantaene.stream/';
+  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+    urlName = 'http://localhost:1337';
+  }
+
   // eslint-disable-next-line no-undef
   const socket = io('http://localhost:1337');
 
