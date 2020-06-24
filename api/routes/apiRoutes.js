@@ -35,7 +35,6 @@ router.post('/registerUser', async function (req, res) {
     let query = { name: rgbString };
     let user = await db.collection(params.usersCollectionName).find(query).toArray();
 
-    console.log(forceLogin);
     if (forceLogin) {
       // right now the foce login just adds a new user with the same name
       // it's the same as if the db was off (i believe so, testing didn't show any problems)
@@ -82,6 +81,8 @@ router.post('/colorAvailable', async function (req, res) {
   let rgbString = req.body.rgbString;
   let query = { name: rgbString };
   const forceLogin = req.body.force;
+
+  console.log(forceLogin);
 
   if (params.useDatabase) {
     let user = await db.collection(params.usersCollectionName).find(query).toArray();
